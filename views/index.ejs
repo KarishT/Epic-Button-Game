@@ -1,0 +1,36 @@
+<html>
+<head>
+<title></title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script type ="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script type ="text/javascript">
+        $(document).ready(function (){
+            // this triggers the connection event in our server!
+            var socket = io.connect();
+            $('#push').click(function(){
+                socket.emit("button_clicked");
+              });
+
+            socket.on("times", function(data){
+              $('#result').html( 'button has been pushed ' + JSON.stringify(data.response) + ' times ');
+            });
+
+            $('#reset').click(function(){
+              socket.emit("reset");
+            });
+
+            socket.on('updatedcount', function(data){
+              $('#result').html('');
+            });
+        })
+    </script>
+</head>
+<body>
+    <div id = "result">
+
+    </div>
+    <input type="submit" id = "push" name="name" value="PUSH THE EPIC BUTTON">
+    <input type="submit" id = "reset" name="bname" value="Reset count">
+    <!-- web page goes here -->
+</body>
+</html>
